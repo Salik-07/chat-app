@@ -1,35 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <p>Chat App!!</p>
 
     <div id="messages" class="chat__messages"></div>
 
     <form id="message-form">
-        <input type="text" name="message" placeholder="Message" required autocomplete="off" />
-        <button>Send</button>
+      <input
+        type="text"
+        name="message"
+        placeholder="Message"
+        required
+        autocomplete="off"
+      />
+      <button>Send</button>
     </form>
     <button id="send-location">Send location</button>
 
     <script id="message-template" type="text/html">
-        <div class="message">
-          <p>{{message}}</p>
-        </div>
-      </script>
+      <div class="message">
+        <p>
+          <span class="message__meta"> {{createdAt}} </span>
+        </p>
+        <p>{{message}}</p>
+      </div>
+    </script>
 
     <script id="location-message-template" type="text/html">
-        <div class="message">
-          <p>
-            <a href="{{url}}" target="_blank">My current location</a>
-          </p>
-        </div>
+      <div class="message">
+        <p>
+          <a href="{{url}}" target="_blank">My current location</a>
+        </p>
+      </div>
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.min.js"></script>
@@ -37,6 +45,5 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.6.0/qs.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/chat.js "></script>
-</body>
-
+  </body>
 </html>
