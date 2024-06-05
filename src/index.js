@@ -8,6 +8,12 @@ const {
   generateMessage,
   generateLocationMessage,
 } = require("./utils/messages");
+const {
+  addUser,
+  removeUser,
+  getUser,
+  getUsersInRoom,
+} = require("./utils/users");
 
 const app = express();
 const server = http.createServer(app);
@@ -21,8 +27,22 @@ app.use(express.static(publicDirectory));
 io.on("connect", (socket) => {
   console.log("New WebSocket connection");
 
-  socket.emit("message", generateMessage("Welcome!"));
-  socket.broadcast.emit("message", generateMessage("A new user has joined!"));
+  socket.on("join", (options, callback) => {
+    const { error, user } = addUser({ id: socket.id, ...options });
+
+    if (error) {
+      return callback(error);
+    }
+
+    socket.join(user.room);
+
+    socket.emit("message", generateMessage("Welcome!"));
+    socket.broadcast
+      .to(user.room)
+      .emit("message", generateMessage(`${user.username} has joined!`));
+
+    callback();
+  });
 
   socket.on("sendMessage", (message, callback) => {
     const filter = new Filter();
@@ -31,7 +51,7 @@ io.on("connect", (socket) => {
       return callback("Profanity is not allowed!");
     }
 
-    io.emit("message", generateMessage(message));
+    io.to("Gulshan").emit("message", generateMessage(message));
     callback();
   });
 
